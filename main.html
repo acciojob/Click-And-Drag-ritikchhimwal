@@ -36,26 +36,36 @@
 
 <script>
 //Your code goes here 
-const itemsContainer = document.querySelector('.items');
-    let isDragging = false;
-    let startX = 0;
+	const slider = document.querySelector('.items');
+let isDown = false;
+let startX;
+let scrollLeft;
 
-    itemsContainer.addEventListener('mousedown', (event) => {
-      isDragging = true;
-      startX = event.clientX;
-    });
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;
+  slider.classList.add('active');
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
 
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
+slider.addEventListener('mouseleave', () => {
+  isDown = false;
+  slider.classList.remove('active');
+});
 
-    document.addEventListener('mousemove', (event) => {
-      if (!isDragging) return;   
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  slider.classList.remove('active');
+});
 
+slider.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 2; // Multiply by 2 for faster scroll
+  slider.scrollLeft = scrollLeft - walk;
+});
 
-      const movement = event.clientX - startX;
-      itemsContainer.style.transform = `translateX(${movement}px)`;
-    });
 </script>
 
   </body>
