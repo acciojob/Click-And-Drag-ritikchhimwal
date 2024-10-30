@@ -36,43 +36,39 @@
 
 <script>
 //Your code goes here 
-	const slider = document.querySelector('.items');
+	// Selecting the container
+const slider = document.querySelector('.items');
 let isDragging = false;
 let startX;
-let scrollStart;
+let scrollLeftStart;
 
-// Add logs to track scrolling
+// Mouse down event starts the drag
 slider.addEventListener('mousedown', (e) => {
   isDragging = true;
+  startX = e.pageX; // Store initial x-position of the mouse
+  scrollLeftStart = slider.scrollLeft; // Store the initial scroll position
   slider.classList.add('active');
-  startX = e.pageX - slider.offsetLeft;
-  scrollStart = slider.scrollLeft;
-  console.log("Drag started. Initial scrollLeft:", scrollStart);
 });
 
-slider.addEventListener('mouseleave', () => {
-  if (isDragging) {
-    isDragging = false;
-    slider.classList.remove('active');
-    console.log("Drag ended on mouse leave. Final scrollLeft:", slider.scrollLeft);
-  }
-});
-
+// Mouse up event stops the drag
 slider.addEventListener('mouseup', () => {
-  if (isDragging) {
-    isDragging = false;
-    slider.classList.remove('active');
-    console.log("Drag ended on mouse up. Final scrollLeft:", slider.scrollLeft);
-  }
+  isDragging = false;
+  slider.classList.remove('active');
+  console.log("Mouse up - scroll position:", slider.scrollLeft);
 });
 
+// Mouse move event moves the scroll position
 slider.addEventListener('mousemove', (e) => {
-  if (!isDragging) return;
-  e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
-  const distance = (x - startX) * 2; // Adjusting multiplier for scroll speed
-  slider.scrollLeft = scrollStart - distance;
-  console.log("Scrolling... Current scrollLeft:", slider.scrollLeft);
+  if (!isDragging) return; // If not dragging, do nothing
+  const x = e.pageX - startX; // Distance moved horizontally by mouse
+  slider.scrollLeft = scrollLeftStart - x; // Update scroll position
+  console.log("Mouse move - current scrollLeft:", slider.scrollLeft);
+});
+
+// Stop dragging on leaving the element
+slider.addEventListener('mouseleave', () => {
+  isDragging = false;
+  slider.classList.remove('active');
 });
 
 </script>
