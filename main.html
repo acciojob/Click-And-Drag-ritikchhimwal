@@ -49,46 +49,23 @@ slider.addEventListener('mousedown', (e) => {
   scrollLeft = slider.scrollLeft;
 });
 
-// End dragging on mouseup or mouseleave
-slider.addEventListener('mouseup', () => {
-  isDown = false;
-  slider.classList.remove('active');
-});
-
 slider.addEventListener('mouseleave', () => {
   isDown = false;
   slider.classList.remove('active');
 });
 
-// Perform dragging
-slider.addEventListener('mousemove', (e) => {
-  if (!isDown) return; // Stop if not dragging
-  e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2; // Adjust scroll speed as needed
-  slider.scrollLeft = scrollLeft - walk;
-});
-
-// For touch events on mobile
-slider.addEventListener('touchstart', (e) => {
-  isDown = true;
-  slider.classList.add('active');
-  const touch = e.touches[0];
-  startX = touch.pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
-});
-
-slider.addEventListener('touchend', () => {
+slider.addEventListener('mouseup', () => {
   isDown = false;
   slider.classList.remove('active');
 });
 
-slider.addEventListener('touchmove', (e) => {
+slider.addEventListener('mousemove', (e) => {
   if (!isDown) return;
-  const touch = e.touches[0];
-  const x = touch.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 1.5; // Adjust scroll speed if needed
   slider.scrollLeft = scrollLeft - walk;
+  console.log('ScrollLeft:', slider.scrollLeft); // Check scroll movement
 });
 
 </script>
