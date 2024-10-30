@@ -37,35 +37,42 @@
 <script>
 //Your code goes here 
 	const slider = document.querySelector('.items');
-let isDown = false;
+let isDragging = false;
 let startX;
-let scrollLeft;
+let scrollStart;
 
-// Start dragging
+// Add logs to track scrolling
 slider.addEventListener('mousedown', (e) => {
-  isDown = true;
+  isDragging = true;
   slider.classList.add('active');
   startX = e.pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
+  scrollStart = slider.scrollLeft;
+  console.log("Drag started. Initial scrollLeft:", scrollStart);
 });
 
 slider.addEventListener('mouseleave', () => {
-  isDown = false;
-  slider.classList.remove('active');
+  if (isDragging) {
+    isDragging = false;
+    slider.classList.remove('active');
+    console.log("Drag ended on mouse leave. Final scrollLeft:", slider.scrollLeft);
+  }
 });
 
 slider.addEventListener('mouseup', () => {
-  isDown = false;
-  slider.classList.remove('active');
+  if (isDragging) {
+    isDragging = false;
+    slider.classList.remove('active');
+    console.log("Drag ended on mouse up. Final scrollLeft:", slider.scrollLeft);
+  }
 });
 
 slider.addEventListener('mousemove', (e) => {
-  if (!isDown) return;
+  if (!isDragging) return;
   e.preventDefault();
   const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 1.5; // Adjust scroll speed if needed
-  slider.scrollLeft = scrollLeft - walk;
-  console.log('ScrollLeft:', slider.scrollLeft); // Check scroll movement
+  const distance = (x - startX) * 2; // Adjusting multiplier for scroll speed
+  slider.scrollLeft = scrollStart - distance;
+  console.log("Scrolling... Current scrollLeft:", slider.scrollLeft);
 });
 
 </script>
